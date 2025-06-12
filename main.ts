@@ -1,17 +1,12 @@
-type drivingSignal = {
-    x: number;
-    y: number;
-    z: number
-};
 type lightDirection = {
     c: DigitalPin;
     r: DigitalPin;
-    l: DigitalPin
+    l: DigitalPin;
 };
 type data = {
     c: number;
     r: number;
-    l: number
+    l: number;
 };
 
 const IR: lightDirection = {
@@ -20,31 +15,37 @@ const IR: lightDirection = {
     l: DigitalPin.P14
 };
 
-let expectedSender = -1584843917;
-let ready: boolean;
-let drivingPackage: drivingSignal;
-let dataPack: data = { c: 0, r: 0, l: 0 };
-let speed: number = 220;
-let eggMan: number = 20;
-let vajco: number = 40;
-let karelIV: number = vajco * eggMan ;
+pins.setPull(IR.c, PinPullMode.PullNone);
+pins.setPull(IR.r, PinPullMode.PullNone);
+pins.setPull(IR.l, PinPullMode.PullNone);
 
-function driveGo(dataPack: data) {
-        
-    PCAmotor.MotorRun(PCAmotor.Motors.M1, -speed)
-    PCAmotor.MotorRun(PCAmotor.Motors.M2, speed)
+let dataPack: data = { c: 0, r: 0, l: 0 }
+let speed = 120;
+let vojta = 1; //speed divider
+
+function readIR(): data {
+    return {
+        c: pins.digitalReadPin(IR.c),
+        r: pins.digitalReadPin(IR.r),
+        l: pins.digitalReadPin(IR.l)
+    };
 }
 
-pins.setPull(DigitalPin.P8, PinPullMode.PullNone)
-pins.digitalReadPin(DigitalPin.P8)
-pins.setPull(IR.c, PinPullMode.PullNone)
-pins.setPull(IR.r, PinPullMode.PullNone)
-pins.setPull(IR.l, PinPullMode.PullNone)
+function followLine(ir: data) {
+    if (ir.c === 1 && ir.r === 0 && ir.l === 0) {
+        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed);
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed);
+    } else if (ir.r === 0 && ir.l === 1) {
+        PCAmotor.MotorRun(PCAmotor.Motors.M1, 0);
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed / vojta);
+    } else if (ir.r === 1 && ir.l === 0) {
+        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed / vojta);
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, 0);
+    }
+}
 
 basic.forever(function () {
-    dataPack.c = pins.digitalReadPin(IR.c)
-    dataPack.r = pins.digitalReadPin(IR.r)
-    dataPack.l = pins.digitalReadPin(IR.l)
-    driveGo(dataPack)
-    basic.pause(20)
+    dataPack = readIR();
+    followLine(dataPack)
+    basic.pause(40)
 })
