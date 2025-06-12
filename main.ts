@@ -26,8 +26,8 @@ let drivingPackage: drivingSignal;
 let dataPack: data = { c: 0, r: 0, l: 0 };
 let speed: number = 220;
 let eggMan: number = 20;
-let kralovskysasek: number = 40;
-let karelIV: number = kralovskysasek * eggMan ;
+let vajco: number = 40;
+let karelIV: number = vajco * eggMan ;
 // tohle muj napad nebyl bro
 
 
