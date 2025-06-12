@@ -51,6 +51,11 @@ function followLine(ir: data) {
 basic.forever(function(){
     dataPack = readIR();
     followLine(dataPack)
-    if (dataPack = 0)
+    if (dataPack.c === 0) {
+        basic.showString("g", 0)
+    } else if (dataPack.c === 1) {
+        basic.showString("R", 0)
+    }
     control.waitMicros(20)
 })
+
