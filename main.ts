@@ -19,6 +19,7 @@ pins.setPull(IR.c, PinPullMode.PullNone);
 pins.setPull(IR.r, PinPullMode.PullNone);
 pins.setPull(IR.l, PinPullMode.PullNone);
 
+let dataPack: data = {c:0,r:0,l:0}
 let speed = 220;
 
 // Read IR sensors
@@ -46,3 +47,9 @@ function followLine(ir: data) {
     }
 }
 
+
+basic.forever(function(){
+    readIR()
+    followLine(dataPack)
+    control.waitMicros(10)
+})
