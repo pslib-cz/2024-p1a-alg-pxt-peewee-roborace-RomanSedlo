@@ -19,10 +19,17 @@ pins.setPull(IR.c, PinPullMode.PullNone);
 pins.setPull(IR.r, PinPullMode.PullNone);
 pins.setPull(IR.l, PinPullMode.PullNone);
 
+
+function speedRamp(rampFrom: number, rampTo: number, invert?: boolean) {
+    for (let i: number = rampFrom; i < rampTo; i += 10) {
+
+    }
+}
+
 let dataPack: data = {c:0,r:0,l:0}
 let speed = 250;
 let vojta = 5;
-
+basic.showString("X",0)
 function readIR(): data {
     return {
         c: pins.digitalReadPin(IR.c),
@@ -37,7 +44,7 @@ function followLine(ir: data) {
         PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed);
     } else if (ir.r === 0) {
         PCAmotor.MotorRun(PCAmotor.Motors.M1, 0);
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed / vojta);
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, speed / vojta);
     } else if (ir.l === 0) {
         PCAmotor.MotorRun(PCAmotor.Motors.M1, speed / vojta);
         PCAmotor.MotorRun(PCAmotor.Motors.M4, 0);
