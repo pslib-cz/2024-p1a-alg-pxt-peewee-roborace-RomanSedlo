@@ -20,8 +20,8 @@ pins.setPull(IR.r, PinPullMode.PullNone);
 pins.setPull(IR.l, PinPullMode.PullNone);
 
 let dataPack: data = { c: 0, r: 0, l: 0 }
-let speed = 160;
-let vojta = 2;
+let speed = 120;
+let vojta = 1; //speed divider
 
 function readIR(): data {
     return {
@@ -33,30 +33,19 @@ function readIR(): data {
 
 function followLine(ir: data) {
     if (ir.c === 1 && ir.r === 0 && ir.l === 0) {
-        control.inBackground(function(){
-            PCAmotor.MotorRun(PCAmotor.Motors.M1, speed);
-            PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed);
-            basic.pause(200)
-        })
-        
+        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed);
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed);
     } else if (ir.r === 0 && ir.l === 1) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, -speed / 2 * vojta);
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed / vojta);
-    } else if (ir.l === 0 && ir.r === 1) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed / vojta);
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, speed / 2 * vojta);
-    } else if (ir.c === 0 && ir.r === 0 && ir.l === 0) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, -1);
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, -1);
         PCAmotor.MotorRun(PCAmotor.Motors.M1, 0);
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed / vojta);
+    } else if (ir.r === 1 && ir.l === 0) {
+        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed / vojta);
         PCAmotor.MotorRun(PCAmotor.Motors.M4, 0);
     }
 }
 
-
 basic.forever(function () {
     dataPack = readIR();
     followLine(dataPack)
-    basic.pause(20)
+    basic.pause(40)
 })
-
