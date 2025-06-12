@@ -34,16 +34,16 @@ function readIR(): data {
 function followLine(ir: data) {
     if (ir.c === 0 && ir.l === 1 && ir.r === 1) {
         PCAmotor.MotorRun(PCAmotor.Motors.M1, speed);
-        PCAmotor.MotorRun(PCAmotor.Motors.M2, speed);
+        PCAmotor.MotorRun(PCAmotor.Motors.M3, speed);
     } else if (ir.l === 0) {
         PCAmotor.MotorRun(PCAmotor.Motors.M1, 0);
-        PCAmotor.MotorRun(PCAmotor.Motors.M2, speed);
+        PCAmotor.MotorRun(PCAmotor.Motors.M3, speed);
     } else if (ir.r === 0) {
         PCAmotor.MotorRun(PCAmotor.Motors.M1, speed);
-        PCAmotor.MotorRun(PCAmotor.Motors.M2, 0);
+        PCAmotor.MotorRun(PCAmotor.Motors.M3, 0);
     } else {
         PCAmotor.MotorRun(PCAmotor.Motors.M1, 0);
-        PCAmotor.MotorRun(PCAmotor.Motors.M2, 0);
+        PCAmotor.MotorRun(PCAmotor.Motors.M3, 0);
     }
 }
 
@@ -51,11 +51,6 @@ function followLine(ir: data) {
 basic.forever(function(){
     dataPack = readIR();
     followLine(dataPack)
-    if (dataPack.c === 0) {
-        basic.showString("g", 0)
-    } else if (dataPack.c === 1) {
-        basic.showString("R", 0)
-    }
-    control.waitMicros(20)
+    basic.pause(20)
 })
 
