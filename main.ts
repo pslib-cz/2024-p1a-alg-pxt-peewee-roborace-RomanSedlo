@@ -33,8 +33,12 @@ function readIR(): data {
 
 function followLine(ir: data) {
     if (ir.c === 1 && ir.r === 0 && ir.l === 0) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed);
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed);
+        control.inBackground(function(){
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, speed);
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed);
+            basic.pause(200)
+        })
+        
     } else if (ir.r === 0 && ir.l === 1) {
         PCAmotor.MotorRun(PCAmotor.Motors.M1, -speed / 2 * vojta);
         PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed / vojta);
