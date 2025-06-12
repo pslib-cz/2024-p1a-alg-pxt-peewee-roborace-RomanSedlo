@@ -20,8 +20,14 @@ pins.setPull(IR.r, PinPullMode.PullNone);
 pins.setPull(IR.l, PinPullMode.PullNone);
 
 let dataPack: data = { c: 0, r: 0, l: 0 }
-let speed = 120;
-let vojta = 1; //speed divider
+let speed: number = 120;
+let vojta: number = 1;
+let levo: number;
+let drevo: number;
+let strevo: number;
+let karta: number;
+let mrbeast: number;
+let dislexie: number;
 
 function readIR(): data {
     return {
@@ -31,10 +37,20 @@ function readIR(): data {
     };
 }
 
+
+
 basic.forever(function () {
     dataPack = readIR();
     
+    if(dataPack.r === 1) {
+        levo += 10
+    }
+
 
     
+
+    PCAmotor.MotorRun(PCAmotor.Motors.M1, mrbeast)
+    PCAmotor.MotorRun(PCAmotor.Motors.M4, dislexie)
+
     basic.pause(40)
 })
