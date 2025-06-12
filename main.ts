@@ -1,12 +1,12 @@
 type lightDirection = {
     c: DigitalPin;
     r: DigitalPin;
-    l: DigitalPin;
+    l: DigitalPin
 };
 type data = {
     c: number;
     r: number;
-    l: number;
+    l: number
 };
 
 const IR: lightDirection = {
