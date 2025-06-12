@@ -31,12 +31,10 @@ function readIR(): data {
     };
 }
 
-function followLine(ir: data) {
-    
-}
-
 basic.forever(function () {
     dataPack = readIR();
-    followLine(dataPack)
+    
+
+    
     basic.pause(40)
 })
