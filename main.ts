@@ -25,10 +25,14 @@ let ready: boolean;
 let drivingPackage: drivingSignal;
 let dataPack: data = { c: 0, r: 0, l: 0 };
 let speed: number = 220;
+let eggMan: number = 20;
+let vajco: number = 40;
+let polevka: number = eggMan * vajco ;
+
 
 function driveGo(dataPack: data) {
     if (dataPack.c === 1) {
-
+        
     } else {
         PCAmotor.MotorRun(PCAmotor.Motors.M1, speed)
         PCAmotor.MotorRun(PCAmotor.Motors.M2, speed)
