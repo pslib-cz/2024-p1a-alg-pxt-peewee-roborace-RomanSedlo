@@ -20,7 +20,7 @@ pins.setPull(IR.r, PinPullMode.PullNone);
 pins.setPull(IR.l, PinPullMode.PullNone);
 
 let dataPack: data = { c: 0, r: 0, l: 0 }
-let speed: number = 100;
+let speed: number = 130;
 let vojta: number = 1.8; //speed divider
 let knedlik: number = 0.8;
 let posledniZatacka: string;
