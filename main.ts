@@ -28,16 +28,11 @@ let speed: number = 220;
 let eggMan: number = 20;
 let vajco: number = 40;
 let karelIV: number = vajco * eggMan ;
-// tohle muj napad nebyl bro
-
 
 function driveGo(dataPack: data) {
-    if (dataPack.c === 1) {
         
-    } else {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed)
-        PCAmotor.MotorRun(PCAmotor.Motors.M2, speed)
-    }
+    PCAmotor.MotorRun(PCAmotor.Motors.M1, -speed)
+    PCAmotor.MotorRun(PCAmotor.Motors.M2, speed)
 }
 
 pins.setPull(DigitalPin.P8, PinPullMode.PullNone)
