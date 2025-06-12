@@ -26,8 +26,9 @@ let drivingPackage: drivingSignal;
 let dataPack: data = { c: 0, r: 0, l: 0 };
 let speed: number = 220;
 let eggMan: number = 20;
-let vajco: number = 40;
-let polevka: number = eggMan * vajco ;
+let kralovskysasek: number = 40;
+let karelIV: number = kralovskysasek * eggMan ;
+// tohle muj napad nebyl bro
 
 
 function driveGo(dataPack: data) {
