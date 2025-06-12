@@ -49,7 +49,7 @@ function followLine(ir: data) {
 
 
 basic.forever(function(){
-    readIR()
-    followLine(dataPack)
+    let ir = readIR();
+    followLine(ir)
     control.waitMicros(10)
 })
