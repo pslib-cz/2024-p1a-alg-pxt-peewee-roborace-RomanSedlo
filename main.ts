@@ -22,6 +22,7 @@ pins.setPull(IR.l, PinPullMode.PullNone);
 let dataPack: data = { c: 0, r: 0, l: 0 }
 let speed = 120;
 let vojta = 1; //speed divider
+let posledniZatacka: string;
 
 function readIR(): data {
     return {
@@ -32,17 +33,32 @@ function readIR(): data {
 }
 
 function followLine(ir: data) {
-    if (ir.c === 1 && ir.r === 0 && ir.l === 0) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed);
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed);
-    } else if (ir.r === 0 && ir.l === 1) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, 0);
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed / vojta);
+    if (ir.c === 1 && ir.l === 0 && ir.r === 0) {
+        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed)
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed)
+        posledniZatacka = "forward"
     } else if (ir.r === 1 && ir.l === 0) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed / vojta);
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, 0);
+        PCAmotor.MotorRun(PCAmotor.Motors.M1, 0)
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed / vojta)
+        posledniZatacka = "left"
+    } else if (ir.r === 0 && ir.l === 1) {
+        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed / vojta)
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, 0)
+        posledniZatacka = "right"
+    } else {
+        if (posledniZatacka == "left") {
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, speed / vojta)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed / vojta)
+        } else if (posledniZatacka == "right") {
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, speed / vojta)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed / vojta)
+        } else {
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, speed)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed)
+        }
     }
 }
+
 
 basic.forever(function () {
     dataPack = readIR();
