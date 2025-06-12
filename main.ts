@@ -20,10 +20,9 @@ pins.setPull(IR.r, PinPullMode.PullNone);
 pins.setPull(IR.l, PinPullMode.PullNone);
 
 let dataPack: data = {c:0,r:0,l:0}
-let speed = 220;
-let vojta = 10;
+let speed = 250;
+let vojta = 5;
 
-// Read IR sensors
 function readIR(): data {
     return {
         c: pins.digitalReadPin(IR.c),
