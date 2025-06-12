@@ -32,16 +32,7 @@ function readIR(): data {
 }
 
 function followLine(ir: data) {
-    if (ir.c === 1 && ir.r === 0 && ir.l === 0) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed);
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed);
-    } else if (ir.r === 0 && ir.l === 1) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, 0);
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed / vojta);
-    } else if (ir.r === 1 && ir.l === 0) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed / vojta);
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, 0);
-    }
+    
 }
 
 basic.forever(function () {
