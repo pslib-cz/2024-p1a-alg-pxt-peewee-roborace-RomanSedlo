@@ -34,16 +34,16 @@ function readIR(): data {
 function followLine(ir: data) {
     if (ir.c === 0 && ir.l === 1 && ir.r === 1) {
         PCAmotor.MotorRun(PCAmotor.Motors.M1, speed);
-        PCAmotor.MotorRun(PCAmotor.Motors.M3, speed);
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, speed);
     } else if (ir.l === 0) {
         PCAmotor.MotorRun(PCAmotor.Motors.M1, 0);
-        PCAmotor.MotorRun(PCAmotor.Motors.M3, speed);
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, speed);
     } else if (ir.r === 0) {
         PCAmotor.MotorRun(PCAmotor.Motors.M1, speed);
-        PCAmotor.MotorRun(PCAmotor.Motors.M3, 0);
-    } else {
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, 0);
+    } else if (ir.r === 0 && ir.l === 0 && ir.c ===0) {
         PCAmotor.MotorRun(PCAmotor.Motors.M1, 0);
-        PCAmotor.MotorRun(PCAmotor.Motors.M3, 0);
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, 0);
     }
 }
 
