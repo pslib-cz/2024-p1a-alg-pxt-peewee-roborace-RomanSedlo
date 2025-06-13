@@ -19,9 +19,12 @@ pins.setPull(IR.c, PinPullMode.PullNone);
 pins.setPull(IR.r, PinPullMode.PullNone);
 pins.setPull(IR.l, PinPullMode.PullNone);
 
+let run: boolean = false
+let inputString: string = "1234"
+
 let dataPack: data = { c: 0, r: 0, l: 0 }
 let speed: number = 130;
-let vojta: number = 1.8; //speed divider
+let vojta: number = 2; //speed divider
 let knedlik: number = 0.8;
 let posledniZatacka: string;
 
@@ -46,9 +49,18 @@ function followLine(ir: data) {
     }
 }
 
+radio.onReceivedString(function(receivedString: string) {
+    if(receivedString === inputString) {
+        
+    }
+})
 
 basic.forever(function () {
-    dataPack = readIR();
-    followLine(dataPack)
-    basic.pause(40)
+    if(run){
+        dataPack = readIR();
+        followLine(dataPack)
+        basic.pause(40)
+    }
 })
+
+
