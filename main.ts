@@ -23,9 +23,6 @@ pins.setPull(IR.c, PinPullMode.PullNone);
 pins.setPull(IR.r, PinPullMode.PullNone);
 pins.setPull(IR.l, PinPullMode.PullNone);
 
-let run: boolean = false
-let inputString: string = "ABCD"
-
 let dataPack: data = { c: 0, r: 0, l: 0 }
 let speed: number = 130;
 let vojta: number = 2; //speed divider
@@ -53,21 +50,9 @@ function followLine(ir: data) {
     }
 }
 
-radio.onReceivedString(function(receivedString: string) {
-    if(receivedString === inputString) {
-        run = true
-    } else if (receivedString === inputString && run) {
-        run = false
-    }
-})
-
 basic.forever(function () {
-    if(run){
         dataPack = readIR();
         followLine(dataPack)
-    } else if(!run) {
-        PCAmotor.MotorStopAll()
-    }
     basic.pause(40)
 })
 
