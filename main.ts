@@ -1,3 +1,7 @@
+radio.setGroup(231);
+radio.setFrequencyBand(57)
+radio.setTransmitSerialNumber(true)
+
 type lightDirection = {
     c: DigitalPin;
     r: DigitalPin;
