@@ -24,8 +24,8 @@ pins.setPull(IR.r, PinPullMode.PullNone);
 pins.setPull(IR.l, PinPullMode.PullNone);
 
 let run: boolean = false
-let inputString: string = "1234"
-let lockString: string = "abcde"
+let inputString: string = "#A92@cL7&vT!"
+let lockString: string = "%mQ3f!B7^zXe"
 
 let dataPack: data = { c: 0, r: 0, l: 0 }
 let speed: number = 130;
