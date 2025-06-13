@@ -24,8 +24,7 @@ pins.setPull(IR.r, PinPullMode.PullNone);
 pins.setPull(IR.l, PinPullMode.PullNone);
 
 let run: boolean = false
-let inputString: string = "#A92@cL7&vT!"
-let lockString: string = "%mQ3f!B7^zXe"
+let inputString: string = "ABCD"
 
 let dataPack: data = { c: 0, r: 0, l: 0 }
 let speed: number = 130;
@@ -57,8 +56,7 @@ function followLine(ir: data) {
 radio.onReceivedString(function(receivedString: string) {
     if(receivedString === inputString) {
         run = true
-    }
-    if (receivedString === lockString) {
+    } else if (receivedString === inputString && run) {
         run = false
     }
 })
@@ -67,8 +65,10 @@ basic.forever(function () {
     if(run){
         dataPack = readIR();
         followLine(dataPack)
-        basic.pause(40)
-    } else music._playDefaultBackground(music.builtInPlayableMelody(Melodies.Dadadadum), music.PlaybackMode.InBackground)
+    } else if(!run) {
+        PCAmotor.MotorStopAll()
+    }
+    basic.pause(40)
 })
 
 
