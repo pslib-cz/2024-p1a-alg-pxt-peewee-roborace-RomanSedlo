@@ -68,7 +68,7 @@ basic.forever(function () {
         dataPack = readIR();
         followLine(dataPack)
         basic.pause(40)
-    }
+    } else music._playDefaultBackground(music.builtInPlayableMelody(Melodies.Dadadadum), music.PlaybackMode.InBackground)
 })
 
 
