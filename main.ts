@@ -25,8 +25,8 @@ pins.setPull(IR.l, PinPullMode.PullNone);
 
 let dataPack: data = { c: 0, r: 0, l: 0 }
 let speed: number = 180;
-let vojta: number = 2; //speed divider
-let knedlik: number = 0.8;
+let divider: number = 2;
+let less: number = speed / 2;
 let posledniZatacka: string;
 
 function readIR(): data {
@@ -42,11 +42,11 @@ function followLine(ir: data) {
         PCAmotor.MotorRun(PCAmotor.Motors.M1, speed)
         PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed)
     } else if (ir.r === 0 && ir.l === 1) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, 0)
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed / vojta)
+        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed - less)
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed / divider)
     } else if (ir.r === 1 && ir.l === 0) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed / vojta)
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, 0)
+        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed / divider)
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed - less)
     }
 }
 
