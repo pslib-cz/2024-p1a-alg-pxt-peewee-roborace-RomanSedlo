@@ -1,5 +1,6 @@
-radio.setGroup(231);
-radio.setFrequencyBand(57)
+radio.setGroup(12)
+radio.setTransmitPower(7)
+radio.setFrequencyBand(39)
 radio.setTransmitSerialNumber(true)
 
 type lightDirection = {
@@ -24,10 +25,14 @@ pins.setPull(IR.r, PinPullMode.PullNone);
 pins.setPull(IR.l, PinPullMode.PullNone);
 
 let dataPack: data = { c: 0, r: 0, l: 0 }
-let speed: number = 180;
+let run: boolean = true;
+
+let defSpeed: number = 160;
+let speed: number = defSpeed;
 let divider: number = 2;
-let less: number = speed / 2;
-let posledniZatacka: string;
+let less: number = speed / 1.2;
+
+let side: string;
 
 function readIR(): data {
     return {
@@ -38,21 +43,49 @@ function readIR(): data {
 }
 
 function followLine(ir: data) {
-    if (ir.c === 1 && ir.l === 0 && ir.r === 0) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed)
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed)
-    } else if (ir.r === 0 && ir.l === 1) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed - less)
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed / divider)
-    } else if (ir.r === 1 && ir.l === 0) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed / divider)
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed - less)
+    if (ir.c === 1 && ir.l === 0 && ir.r === 0 && run) {
+        PCAmotor.MotorRun(PCAmotor.Motors.M1, -defSpeed)
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, -defSpeed)
+    } else if (ir.r === 0 && ir.l === 1 && run) {
+        PCAmotor.MotorRun(PCAmotor.Motors.M1, -defSpeed + less)
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, -defSpeed / divider)
+    } else if (ir.r === 1 && ir.l === 0 && run) {
+        PCAmotor.MotorRun(PCAmotor.Motors.M1, -defSpeed / divider)
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, -defSpeed - less)
+    } else if (ir.c === 1 && ir.r === 1 && ir.l === 1 && run) {
+        run = false
+        turn90(side, ir)
     }
 }
 
+function turn90(dir: string, ir: data) {
+    if (dir === "left") {
+        speed = -defSpeed
+    } else if (dir === "right") {
+        speed = defSpeed
+    }
+    PCAmotor.MotorStopAll()
+    control.waitMicros(60)
+    PCAmotor.MotorRun(PCAmotor.Motors.M1, speed)
+    PCAmotor.MotorRun(PCAmotor.Motors.M4, speed)
+    while (ir.c === 1 && ir.r === 0 && ir.l === 0) {
+        PCAmotor.MotorStopAll()
+    }
+    run = true
+}
+
+radio.onReceivedString(function (receivedString: string) {
+    if (receivedString === "run") {
+        side = "left"
+    }
+    if (receivedString === "turn") {
+        side = "right"
+    }
+})
+
 basic.forever(function () {
-        dataPack = readIR();
-        followLine(dataPack)
+    dataPack = readIR();
+    followLine(dataPack)
     basic.pause(40)
 })
 
