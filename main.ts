@@ -27,7 +27,7 @@ pins.setPull(IR.l, PinPullMode.PullNone);
 let dataPack: data = { c: 0, r: 0, l: 0 }
 let run: boolean = true;
 
-let defSpeed: number = 160;
+const defSpeed: number = 160;
 let speed: number = defSpeed;
 let divider: number = 2;
 let less: number = speed / 1.2;
@@ -78,10 +78,7 @@ function turn90(dir: string, ir: data) {
     } else if (dir === "right") {
         speed = defSpeed
     }
-    PCAmotor.MotorStopAll()
-    control.waitMicros(60)
-    PCAmotor.MotorRun(PCAmotor.Motors.M1, speed)
-    PCAmotor.MotorRun(PCAmotor.Motors.M4, speed)
+    runMotors(speed, true)
     while (ir.c === 1 && ir.r === 0 && ir.l === 0) {
         PCAmotor.MotorStopAll()
     }
@@ -101,6 +98,7 @@ function driveAround() {
     runMotors(speed, true)
     basic.pause(ninetyDigrees)
     runMotors(speed)
+    speed = defSpeed
 }
 
 radio.onReceivedString(function (receivedString: string) {
