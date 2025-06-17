@@ -32,9 +32,11 @@ let speed: number = defSpeed;
 let divider: number = 2;
 let less: number = speed / 1.2;
 
-const carScale = 20;
+const carScale = 250;
+const ninetyDigrees = 90;
 
 let side: string;
+let speed2: number;
 
 function readIR(): data {
     return {
@@ -42,6 +44,16 @@ function readIR(): data {
         r: pins.digitalReadPin(IR.r),
         l: pins.digitalReadPin(IR.l)
     };
+}
+
+function runMotors(speed: number, rotate?: boolean) {
+    if(rotate) {
+        speed2 = speed
+    } else speed2 = -speed
+    PCAmotor.MotorStopAll()
+    control.waitMicros(40)
+    PCAmotor.MotorRun(PCAmotor.Motors.M1, speed)
+    PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
 }
 
 function followLine(ir: data) {
@@ -77,7 +89,18 @@ function turn90(dir: string, ir: data) {
 }
 
 function driveAround() {
-    
+    speed = 100
+    runMotors(-speed, true)
+    basic.pause(ninetyDigrees)
+    runMotors(speed)
+    basic.pause(carScale)
+    runMotors(speed, true)
+    basic.pause(ninetyDigrees)
+    runMotors(speed)
+    basic.pause(carScale)
+    runMotors(speed, true)
+    basic.pause(ninetyDigrees)
+    runMotors(speed)
 }
 
 radio.onReceivedString(function (receivedString: string) {
