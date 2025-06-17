@@ -76,7 +76,7 @@ function turn90(dir: string, ir: data) {
     run = true
 }
 
-function goAround() {
+function driveAround() {
     
 }
 
