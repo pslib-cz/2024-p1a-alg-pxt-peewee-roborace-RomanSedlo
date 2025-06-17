@@ -70,9 +70,11 @@ function followLine(ir: data) {
         PCAmotor.MotorRun(PCAmotor.Motors.M4, (defSpeed - less))
     } else if (ir.c === 1 && ir.r === 1 && ir.l === 1 && run) {
         run = false
+        PCAmotor.MotorStopAll()
         turn90(side, ir)
-    } else if(sonicDetect) {
+    } else if(sonicDetect && run) {
         run = false
+        PCAmotor.MotorStopAll()
         driveAround()
     }
 }
