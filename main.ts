@@ -24,7 +24,7 @@ pins.setPull(IR.c, PinPullMode.PullNone);
 pins.setPull(IR.r, PinPullMode.PullNone);
 pins.setPull(IR.l, PinPullMode.PullNone);
 
-let dataPack: data = { c: 0, r: 0, l: 0 }
+let dataPack: data = { c: 0, r: 0, l: 0 };
 let run: boolean = true;
 let sonicDetect: boolean;
 
@@ -37,8 +37,9 @@ let less: number = speed / 1.2;
 const carScale = 250;
 const ninetyDigrees = 90;
 
-let side: string;
+let side: string = "left";
 let speed2: number;
+let liveIR: data = { c: 0, r: 0, l: 0 };
 
 function readIR(): data {
     return {
@@ -71,7 +72,7 @@ function followLine(ir: data) {
     } else if (ir.c === 1 && ir.r === 1 && ir.l === 1 && run) {
         run = false
         PCAmotor.MotorStopAll()
-        turn90(side, ir)
+        turn90(side)
     } else if(sonicDetect && run) {
         run = false
         PCAmotor.MotorStopAll()
@@ -79,15 +80,19 @@ function followLine(ir: data) {
     }
 }
 
-function turn90(dir: string, ir: data) {
+function turn90(dir: string) {
     if (dir === "left") {
         speed = -defSpeed
     } else if (dir === "right") {
         speed = defSpeed
     }
     runMotors(speed, true)
-    while (ir.c === 1 && ir.r === 0 && ir.l === 0) {
-        PCAmotor.MotorStopAll()
+    while (true) {
+        liveIR = readIR()
+        if (!(liveIR.c === 1 && liveIR.r === 0 && liveIR.l === 0)) {
+            PCAmotor.MotorStopAll()
+            break;
+        }
     }
     run = true
 }
