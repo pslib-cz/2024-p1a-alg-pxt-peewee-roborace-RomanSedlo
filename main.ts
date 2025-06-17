@@ -32,6 +32,8 @@ let speed: number = defSpeed;
 let divider: number = 2;
 let less: number = speed / 1.2;
 
+const carScale = 20;
+
 let side: string;
 
 function readIR(): data {
@@ -72,6 +74,10 @@ function turn90(dir: string, ir: data) {
         PCAmotor.MotorStopAll()
     }
     run = true
+}
+
+function goAround() {
+    
 }
 
 radio.onReceivedString(function (receivedString: string) {
