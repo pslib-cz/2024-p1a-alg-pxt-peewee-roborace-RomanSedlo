@@ -98,6 +98,10 @@ function driveAround() {
     runMotors(speed, true)
     basic.pause(ninetyDigrees)
     runMotors(speed)
+    basic.pause(carScale)
+    runMotors(-speed, true)
+    basic.pause(ninetyDigrees)
+    PCAmotor.MotorStopAll()
     speed = defSpeed
 }
 
@@ -115,5 +119,3 @@ basic.forever(function () {
     followLine(dataPack)
     basic.pause(40)
 })
-
-
