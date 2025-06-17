@@ -81,9 +81,9 @@ function followLine(ir: data) {
 
 function turn90(dir: string, ir: data) {
     if (dir === "left") {
-        speed = -(defSpeed - less/2)
+        speed = -defSpeed
     } else if (dir === "right") {
-        speed = defSpeed - less/2
+        speed = defSpeed
     }
     runMotors(speed, true)
     while (ir.c === 1 && ir.r === 0 && ir.l === 0) {
@@ -100,7 +100,7 @@ function driveAround() {
 
         if(i % 3 === 0) {
             speed = -speed
-        } else speed = speed
+        } else speed = lowSpeed
         runMotors(speed, true)
         basic.pause(ninetyDigrees)
     }
@@ -123,4 +123,3 @@ basic.forever(function () {
     followLine(dataPack)
     basic.pause(40)
 })
-
