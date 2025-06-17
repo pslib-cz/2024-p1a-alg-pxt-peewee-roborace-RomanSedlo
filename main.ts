@@ -26,9 +26,11 @@ pins.setPull(IR.l, PinPullMode.PullNone);
 
 let dataPack: data = { c: 0, r: 0, l: 0 }
 let run: boolean = true;
+let sonicDetect: boolean;
 
 const defSpeed: number = 160;
 let speed: number = defSpeed;
+let lowSpeed: number = defSpeed - 60
 let divider: number = 2;
 let less: number = speed / 1.2;
 
@@ -69,14 +71,17 @@ function followLine(ir: data) {
     } else if (ir.c === 1 && ir.r === 1 && ir.l === 1 && run) {
         run = false
         turn90(side, ir)
+    } else if(sonicDetect) {
+        run = false
+        driveAround()
     }
 }
 
 function turn90(dir: string, ir: data) {
     if (dir === "left") {
-        speed = -defSpeed
+        speed = -(defSpeed - less/2)
     } else if (dir === "right") {
-        speed = defSpeed
+        speed = defSpeed - less/2
     }
     runMotors(speed, true)
     while (ir.c === 1 && ir.r === 0 && ir.l === 0) {
@@ -86,23 +91,20 @@ function turn90(dir: string, ir: data) {
 }
 
 function driveAround() {
-    speed = 100
-    runMotors(-speed, true)
-    basic.pause(ninetyDigrees)
-    runMotors(speed)
-    basic.pause(carScale)
-    runMotors(speed, true)
-    basic.pause(ninetyDigrees)
-    runMotors(speed)
-    basic.pause(carScale)
-    runMotors(speed, true)
-    basic.pause(ninetyDigrees)
-    runMotors(speed)
-    basic.pause(carScale)
-    runMotors(-speed, true)
-    basic.pause(ninetyDigrees)
+    for(let i :number = 3; i <= 6; i +=1) {
+        speed = lowSpeed
+        runMotors(speed)
+        basic.pause(carScale)
+
+        if(i % 3 === 0) {
+            speed = -speed
+        } else speed = speed
+        runMotors(speed, true)
+        basic.pause(ninetyDigrees)
+    }
     PCAmotor.MotorStopAll()
     speed = defSpeed
+    run = true
 }
 
 radio.onReceivedString(function (receivedString: string) {
@@ -119,3 +121,4 @@ basic.forever(function () {
     followLine(dataPack)
     basic.pause(40)
 })
+
