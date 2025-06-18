@@ -60,23 +60,27 @@ function runMotors(speed: number, rotate?: boolean) {
 }
 
 function followLine(ir: data) {
-    if (ir.c === 1 && ir.l === 0 && ir.r === 0 && run) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, defSpeed)
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, -defSpeed)
-    } else if (ir.r === 0 && ir.l === 1 && run) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, -(defSpeed - less))
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, -(defSpeed / divider))
-    } else if (ir.r === 1 && ir.l === 0 && run) {
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, (defSpeed / divider))
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, (defSpeed - less))
-    } else if (ir.c === 1 && ir.r === 1 && ir.l === 1 && run) {
-        run = false
-        PCAmotor.MotorStopAll()
-        turn90(side)
-    } else if(sonicDetect && run) {
-        run = false
-        PCAmotor.MotorStopAll()
-        driveAround()
+    if(run) {
+        if (ir.c === 1 && ir.l === 0 && ir.r === 0) {
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, defSpeed)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, -defSpeed)
+        } else if (ir.r === 0 && ir.l === 1) {
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, -(defSpeed - less))
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, -(defSpeed / divider))
+        } else if (ir.r === 1 && ir.l === 0) {
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, (defSpeed / divider))
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, (defSpeed - less))
+        } else if (ir.c === 1 && ir.r === 1 && ir.l === 1) {
+            run = false
+            PCAmotor.MotorStopAll()
+            control.waitMicros(lowSpeed)
+            turn90(side)
+        } else if (sonicDetect) {
+            run = false
+            PCAmotor.MotorStopAll()
+            control.waitMicros(lowSpeed)
+            driveAround()
+        }
     }
 }
 
@@ -87,6 +91,7 @@ function turn90(dir: string) {
         speed = defSpeed
     }
     runMotors(speed, true)
+    basic.pause(250)
     while (true) {
         liveIR = readIR()
         if (!(liveIR.c === 1 && liveIR.r === 0 && liveIR.l === 0)) {
