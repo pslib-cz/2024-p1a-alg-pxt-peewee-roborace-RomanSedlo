@@ -31,8 +31,8 @@ let sonicDetect: boolean;
 const defSpeed: number = 140;
 let speed: number = defSpeed;
 let lowSpeed: number = defSpeed - 60
-let divider: number = 2.2;
-let less: number = speed / 1.15;
+let divider: number = 1.2;
+let less: number = defSpeed / 1.6;
 
 const carScale = 250;
 const ninetyDigrees = 90;
@@ -144,6 +144,6 @@ radio.onReceivedString(function (receivedString: string) {
 basic.forever(function () {
     dataPack = readIR();
     followLine(dataPack)
-    basic.pause(40)
+    basic.pause(32)
 })
 
