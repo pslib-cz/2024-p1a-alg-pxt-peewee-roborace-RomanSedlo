@@ -28,7 +28,7 @@ let dataPack: data = { c: 0, r: 0, l: 0 };
 let run: boolean = true;
 let sonicDetect: boolean;
 
-const defSpeed: number = 160;
+const defSpeed: number = 140;
 let speed: number = defSpeed;
 let lowSpeed: number = defSpeed - 60
 let divider: number = 2;
@@ -86,8 +86,11 @@ function followLine(ir: data) {
 
 function turn90(dir: string) {
     if(side === "mid") {
-        runMotors(speed)
-        basic.pause(50)
+        PCAmotor.MotorStopAll()
+        control.waitMicros(40)
+        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed)
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed)
+        basic.pause(400)
     } else {
         if (dir === "left") {
             speed = -defSpeed
