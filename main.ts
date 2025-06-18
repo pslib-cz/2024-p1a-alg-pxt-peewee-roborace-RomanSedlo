@@ -87,14 +87,8 @@ function followLine(ir: data) {
 function turn90(dir: string) {
     if (dir === "left") {
         speed = -defSpeed
-        control.inBackground(function(){
-            music._playDefaultBackground(music.builtInPlayableMelody(Melodies.Nyan), music.PlaybackMode.InBackground)
-        })
     } else if (dir === "right") {
         speed = defSpeed
-        control.inBackground(function () {
-            music._playDefaultBackground(music.builtInPlayableMelody(Melodies.Wedding), music.PlaybackMode.InBackground)
-        })
     }
     runMotors(speed, true)
     basic.pause(250)
