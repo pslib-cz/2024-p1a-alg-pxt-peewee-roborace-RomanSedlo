@@ -31,8 +31,8 @@ let sonicDetect: boolean;
 const defSpeed: number = 140;
 let speed: number = defSpeed;
 let lowSpeed: number = defSpeed - 60
-let divider: number = 2;
-let less: number = speed / 1.2;
+let divider: number = 2.2;
+let less: number = speed / 1.15;
 
 const carScale = 250;
 const ninetyDigrees = 90;
@@ -72,7 +72,9 @@ function followLine(ir: data) {
             PCAmotor.MotorRun(PCAmotor.Motors.M4, (defSpeed - less))
         } else if (ir.c === 1 && ir.r === 1 && ir.l === 1) {
             run = false
-            PCAmotor.MotorStopAll()
+            if(side != "mid") {
+                PCAmotor.MotorStopAll()
+            }
             control.waitMicros(lowSpeed)
             turn90(side)
         } else if (sonicDetect) {
@@ -88,8 +90,8 @@ function turn90(dir: string) {
     if(side === "mid") {
         PCAmotor.MotorStopAll()
         control.waitMicros(40)
-        PCAmotor.MotorRun(PCAmotor.Motors.M1, speed)
-        PCAmotor.MotorRun(PCAmotor.Motors.M4, -speed)
+        PCAmotor.MotorRun(PCAmotor.Motors.M1, defSpeed)
+        PCAmotor.MotorRun(PCAmotor.Motors.M4, -defSpeed)
         basic.pause(400)
     } else {
         if (dir === "left") {
