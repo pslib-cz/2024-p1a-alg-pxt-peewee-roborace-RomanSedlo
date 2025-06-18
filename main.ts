@@ -14,7 +14,7 @@ type data = {
     l: number;
 };
 
-const IR: lightDirection = {
+const IR: lightDirection = { 
     c: DigitalPin.P15,
     r: DigitalPin.P13,
     l: DigitalPin.P14
@@ -37,7 +37,7 @@ let less: number = speed / 1.2;
 const carScale = 250;
 const ninetyDigrees = 90;
 
-let side: string = "left";
+let side: string = "mid";
 let speed2: number;
 let liveIR: data = { c: 0, r: 0, l: 0 };
 
@@ -85,18 +85,23 @@ function followLine(ir: data) {
 }
 
 function turn90(dir: string) {
-    if (dir === "left") {
-        speed = -defSpeed
-    } else if (dir === "right") {
-        speed = defSpeed
-    }
-    runMotors(speed, true)
-    basic.pause(250)
-    while (true) {
-        liveIR = readIR()
-        if (!(liveIR.c === 1 && liveIR.r === 0 && liveIR.l === 0)) {
-            PCAmotor.MotorStopAll()
-            break;
+    if(side === "mid") {
+        runMotors(speed)
+        basic.pause(50)
+    } else {
+        if (dir === "left") {
+            speed = -defSpeed
+        } else if (dir === "right") {
+            speed = defSpeed
+        }
+        runMotors(speed, true)
+        basic.pause(250)
+        while (true) {
+            liveIR = readIR()
+            if (!(liveIR.c === 1 && liveIR.r === 0 && liveIR.l === 0)) {
+                PCAmotor.MotorStopAll()
+                break;
+            }
         }
     }
     run = true
@@ -126,6 +131,9 @@ radio.onReceivedString(function (receivedString: string) {
     if (receivedString === "turn") {
         side = "right"
     }
+    if(receivedString === "mid") {
+        side = "mid"
+    }
 })
 
 basic.forever(function () {
@@ -133,3 +141,4 @@ basic.forever(function () {
     followLine(dataPack)
     basic.pause(40)
 })
+
